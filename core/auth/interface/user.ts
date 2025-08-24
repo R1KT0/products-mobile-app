@@ -5,3 +5,13 @@ export interface User {
     isActive: boolean;
     roles: string[];
 }
+
+export interface AuthResponse {
+    user: User;
+    token: string;
+}
+
+export interface UserToken {
+    user: User;
+    token: string;
+}

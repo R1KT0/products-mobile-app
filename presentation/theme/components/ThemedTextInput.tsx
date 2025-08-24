@@ -19,10 +19,12 @@ const ThemedTextInput = ({ icon, ...props }: Props) => {
 
     return (
         <View
-            style={{
-                ...styles.border,
-                borderColor: isActive ? primaryColor : '#ccc',
-            }}
+            style={[
+                styles.border,
+                {
+                    borderColor: isActive ? primaryColor : '#ccc',
+                }
+            ]}
             onTouchStart={() => inputRef.current?.focus()}
         >
             {icon && (
@@ -39,11 +41,12 @@ const ThemedTextInput = ({ icon, ...props }: Props) => {
                 ref={inputRef}
                 onFocus={() => setIsActive(true)}
                 onBlur={() => setIsActive(false)}
-                style={{
-                    flex: 1,
-                    marginRight: 10,
-                    color: textColor,
-                }}
+                style={[
+                    styles.input,
+                    {
+                        color: textColor,
+                    }
+                ]}
                 {...props}
             />
         </View >
@@ -69,9 +72,16 @@ const styles = StyleSheet.create({
     border: {
         borderWidth: 1,
         borderRadius: 5,
-        padding: 5,
+        padding: 15,
         marginBottom: 10,
         flexDirection: 'row',
         alignItems: 'center',
+        width: '100%',
+        minHeight: 50,
+    },
+
+    input: {
+        flex: 1,
+        fontSize: 16,
     }
 })

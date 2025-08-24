@@ -7,9 +7,12 @@ import 'react-native-reanimated';
 
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/presentation/theme/hooks/useColorScheme';
+import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const backgroundColor = useThemeColor({}, 'background');
+
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -19,7 +22,7 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor }}>
 
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack
@@ -30,7 +33,12 @@ export default function RootLayout() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="(products-app)/(home)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(products-app)/(home)"
+            options={{
+              headerShown: false
+            }}
+          />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
