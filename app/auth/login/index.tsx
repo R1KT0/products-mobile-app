@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, ScrollView, useWindowDimensions, View } from 'react-native';
 
-import { testApiConnection, testLoginEndpoint } from '@/core/auth/api/apiTest';
+import { testApiConnection, testLoginEndpoint } from '@/core/api/apiTest';
 import { useAuthStore } from '@/presentation/auth/store/useAuthStore';
 import ThemedButton from '@/presentation/theme/components/ThemedButton';
 import ThemedLink from '@/presentation/theme/components/ThemedLink';

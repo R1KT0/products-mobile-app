@@ -1,5 +1,5 @@
+import { productsApi } from '@/core/api/productsApi';
 import { returnUserToken } from '@/core/auth/actions/auth-actions';
-import { productsApi } from '@/core/auth/api/productsApi';
 import { AuthResponse } from '@/core/auth/interface/user';
 import ThemedButton from '@/presentation/theme/components/ThemedButton';
 import ThemedLink from '@/presentation/theme/components/ThemedLink';

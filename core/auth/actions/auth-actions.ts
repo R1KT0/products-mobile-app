@@ -1,4 +1,4 @@
-import { productsApi } from '../api/productsApi';
+import { productsApi } from '../../api/productsApi';
 import { AuthResponse, UserToken } from '../interface/user';
 
 export const returnUserToken = (data: AuthResponse): UserToken => {
