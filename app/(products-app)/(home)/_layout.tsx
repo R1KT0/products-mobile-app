@@ -17,7 +17,10 @@ const CheckAuthLayout = () => {
     useEffect(() => {
         // Chequea si el usuario está autenticado
         checkAuthStatus();
+
     }, []);
+
+
 
     if (status === 'checking') {
         return (
@@ -35,7 +38,6 @@ const CheckAuthLayout = () => {
     }
 
     if (status === 'unauthenticated') {
-        // Guardar la ruta del usuario para redirigirlo luego de autenticarse
         return <Redirect href='/auth/login' />
     }
 

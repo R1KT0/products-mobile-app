@@ -6,6 +6,7 @@ import 'react-native-reanimated';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/presentation/theme/hooks/useColorScheme';
@@ -31,9 +32,11 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
-  if (!loaded) {
-    return null;
-  }
+  useEffect(() => {
+    if (loaded) SplashScreen.hideAsync(); // Hide splash screen once fonts are loaded
+  }, [loaded]);
+
+  if (!loaded) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor }}>
@@ -47,12 +50,12 @@ export default function RootLayout() {
               headerShown: false,
             }}
           >
-            {/* <Stack.Screen
+            <Stack.Screen
               name="(products-app)/(home)"
               options={{
                 headerShown: false
               }}
-            /> */}
+            />
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>

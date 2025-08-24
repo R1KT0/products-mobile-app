@@ -15,7 +15,7 @@ export const getProducts = async (limit = 20, offset = 0) => {
 
         return data.map((product) => ({
             ...product,
-            images: product.images.map(image => `${productsApi.defaults.baseURL}/files/product/${image}`)
+            images: product.images.map(image => `${productsApi.defaults.baseURL}files/product/${image}`)
         }));
 
     } catch (error) {

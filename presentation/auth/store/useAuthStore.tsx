@@ -26,16 +26,17 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
 
     changeStatus: async (token?: string, user?: User) => {
-
         if (!token && !user) {
             set({
                 status: 'unauthenticated',
                 token: undefined,
                 user: undefined,
             })
-            //TODO: llamar a logout
+
+            await get().logout();
             return false;
         }
+        console.log("Aca no llega nuncaaaaaaaaa***************");
 
         set({
             status: 'authenticated',
@@ -64,12 +65,11 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         // if (get().user) return; //! Solo para testing, no se debe usar en producción!!!
 
         const resp = await authCheckStatus();
-
+        console.log({ resp });
         await get().changeStatus(resp?.token, resp?.user);
     },
 
     logout: async () => {
-        //TODO: Eliminar de Secure Storage
         await SecureStorageAdapter.deleteItem('token');
 
         set({

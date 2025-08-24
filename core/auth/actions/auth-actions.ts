@@ -67,10 +67,6 @@ export const authCheckStatus = async () => {
 
         return returnUserToken(data)
     } catch (error) {
-        console.log(error);
-
         return null;
-
-
     }
 }

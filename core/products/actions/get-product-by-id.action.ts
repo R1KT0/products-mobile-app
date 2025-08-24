@@ -10,7 +10,7 @@ export const getProductById = async (id: string): Promise<Product> => {
 
         return {
             ...data,
-            images: data.images.map(image => `${productsApi.defaults.baseURL}/files/product/${image}`)
+            images: data.images.map(image => `${productsApi.defaults.baseURL}files/product/${image}`)
         };
 
     } catch (error) {
