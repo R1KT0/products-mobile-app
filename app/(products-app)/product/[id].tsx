@@ -18,8 +18,7 @@ const ProductScreen = ()  =>{
     const navigation = useNavigation();
     const { id } = useLocalSearchParams();
     const primary = useThemeColor({}, 'primary');
-    const { productQuery } = useProduct(`${id}`);
-    
+    const { productQuery, productMutation } = useProduct(`${id}`);
     
    // TODO: descomentar en casa jeje  
     // if (productQuery.isLoading) {
@@ -64,7 +63,7 @@ const ProductScreen = ()  =>{
 
         <Formik
             initialValues={product}
-            onSubmit={(productLike) => console.log(productLike)}
+            onSubmit={productMutation.mutate}
         >
             {
                 ({values, handleChange, handleSubmit, setFieldValue}) => (
@@ -156,7 +155,7 @@ const ProductScreen = ()  =>{
                             <View style={{marginVertical: 10, marginHorizontal: 10}}>
                                 <ThemedButton
                                 icon='save-outline'
-                                onPress={() => console.log('Guardando')}
+                                onPress={() => handleSubmit()}
                                 >
 
                                 Guardar   
