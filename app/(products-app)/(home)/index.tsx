@@ -4,6 +4,8 @@ import { ActivityIndicator, View } from 'react-native';
 import ProductList from '@/presentation/products/components/ProductList';
 import { useProducts } from '@/presentation/products/hooks/useProducts';
 import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
+import { FAB } from '@/presentation/theme/components/FAB';
+import { router } from 'expo-router';
 
 const index = () => {
 
@@ -30,6 +32,11 @@ const index = () => {
                 }}
                 products={productsQuery.data?.pages.flatMap(page => page ?? []) ?? []}
                 loadNextPage={loadNextPage}
+            />
+
+            <FAB
+                iconName='add-outline'
+                onPress={ () => router.push('/(products-app)/products/new')}
             />
         </View>
     )
