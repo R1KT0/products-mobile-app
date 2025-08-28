@@ -38,13 +38,14 @@ const CheckAuthLayout = () => {
     }
 
     if (status === 'unauthenticated') {
-        return <Redirect href='/auth/login' />
+        return <Redirect href='/(products-app)/product/1' />
+        // return <Redirect href='/auth/login' />
     }
 
     return (
         <Stack
             screenOptions={{
-                headerShadowVisible: false,
+                // headerShadowVisible: false,
                 headerStyle: {
                     backgroundColor,
                 },
@@ -54,9 +55,18 @@ const CheckAuthLayout = () => {
             }}
         >
             <Stack.Screen
-                name='index'
+                name='(home)/index'
                 options={{
                     title: 'Productos',
+                    headerLeft: () => <LogoutIconButton />
+                    // headerShown: false
+                }}
+            />
+
+            <Stack.Screen
+                name='product/[id]'
+                options={{
+                    title: 'Producto',
                     headerLeft: () => <LogoutIconButton />
                     // headerShown: false
                 }}

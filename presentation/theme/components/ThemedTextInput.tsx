@@ -5,7 +5,6 @@ import { useThemeColor } from '../hooks/useThemeColor';
 
 interface Props extends TextInputProps {
     icon?: keyof typeof Ionicons.glyphMap;
-    style?: StyleProp<ViewStyle>;
 }
 
 export const ThemedTextInput = ({ icon, style, ...props }: Props) => {
@@ -25,7 +24,7 @@ export const ThemedTextInput = ({ icon, style, ...props }: Props) => {
                     ...styles.border,
                     borderColor: isActive ? primaryColor : '#ccc',
                 },
-                style
+                style as StyleProp<ViewStyle>
             ]}
             onTouchStart={() => inputRef.current?.focus()}
         >

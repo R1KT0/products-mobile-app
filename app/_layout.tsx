@@ -47,15 +47,9 @@ export default function RootLayout() {
               headerStyle: {
                 backgroundColor: Colors.light.primary,
               },
-              headerShown: false,
+              // headerShown: false,
             }}
           >
-            <Stack.Screen
-              name="(products-app)/(home)"
-              options={{
-                headerShown: false
-              }}
-            />
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>

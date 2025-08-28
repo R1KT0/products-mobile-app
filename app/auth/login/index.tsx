@@ -6,7 +6,7 @@ import { useAuthStore } from '@/presentation/auth/store/useAuthStore';
 import ThemedButton from '@/presentation/theme/components/ThemedButton';
 import ThemedLink from '@/presentation/theme/components/ThemedLink';
 import { ThemedText } from '@/presentation/theme/components/ThemedText';
-import ThemedTextInput from '@/presentation/theme/components/ThemedTextInput';
+import { ThemedTextInput } from '@/presentation/theme/components/ThemedTextInput';
 import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
 import { router } from 'expo-router';
 
@@ -142,7 +142,7 @@ const LoginScreen = () => {
                         autoCorrect={false}
                         icon='mail-outline'
                         value={form.email}
-                        onChangeText={(value) => setForm({ ...form, email: value })}
+                        onChangeText={(value: string) => setForm({ ...form, email: value })}
                     />
 
                     <ThemedTextInput
@@ -151,7 +151,7 @@ const LoginScreen = () => {
                         autoCapitalize='none'
                         icon='lock-closed-outline'
                         value={form.password}
-                        onChangeText={(value) => setForm({ ...form, password: value })}
+                        onChangeText={(value: string) => setForm({ ...form, password: value })}
                     />
                 </View>
 
