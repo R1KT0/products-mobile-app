@@ -1,12 +1,14 @@
 import { ThemedText } from '@/presentation/theme/components/ThemedText';
 import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
+import { Ionicons } from '@expo/vector-icons';
 import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import { router } from 'expo-router';
 import { useRef, useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
-
+import { Button, Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 export default function CameraScreen() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const [selectedImage, setSelectedImage] = useState<string>();
 
 
     const cameraRef = useRef<CameraView>(null);
@@ -41,12 +43,53 @@ export default function CameraScreen() {
 
     if (!picture?.uri) return;
 
+    setSelectedImage(picture.uri);
+
     // TODO: guardar imagen
   }
+
+
+  const onReturnCancel = () => {
+    // TODO: limpiar el estado
+
+    router.dismiss();
+  }
+
+
+  const onPictureAccepted = () => {
+    // TODO: implementar funcion
+  }
+
+
+  const onRetakePhoto = () => setSelectedImage(undefined);
+  
+
 
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
+
+  if (selectedImage) {
+    return (
+
+        <View style={styles.container}>
+
+                <Image
+                    source={{uri: selectedImage}}
+                    style={styles.camera}
+                />
+
+                <ConfirmImageButton onPress={onPictureAccepted}/>
+
+                <RetakeImageButton onPress={onRetakePhoto}/>
+
+                <ReturnCancelButton
+                    onPress={onReturnCancel}
+                />
+        </View>
+      )
+  }
+
 
   return (
     <View style={styles.container}>
@@ -56,6 +99,20 @@ export default function CameraScreen() {
         <ShutterButton 
             onPress={onShutterButtonPress}
         />
+
+        <FlipCameraButton 
+            onPress={toggleCameraFacing}
+        />
+
+        <GalleryButton/>
+
+
+
+        <ReturnCancelButton
+            onPress={onReturnCancel}
+        />
+
+
 
         {/* <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
           <Text style={styles.text}>Flip Camera</Text>
@@ -89,6 +146,94 @@ const ShutterButton = ({ onPress = () => {} }) => {
     )
 }
 
+const ConfirmImageButton = ({ onPress = () => {} }) => {
+
+    const dimensions = useWindowDimensions();
+    const primaryColor = useThemeColor({}, 'primary')
+
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={[
+                styles.shutterButton,
+                {
+                    position: 'absolute',
+                    bottom: 30,
+                    left: dimensions.width / 2 - 32,
+                    borderColor: primaryColor
+                }
+            ]}
+        >
+            <Ionicons
+                name="checkmark-outline"
+                size={30}
+                color={primaryColor}
+            />
+        </TouchableOpacity>
+    )
+}
+
+const FlipCameraButton = ({onPress = () => {}}) => {
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={styles.flipCameraButton}
+        >
+            <Ionicons
+                name="camera-reverse-outline"
+                size={30}
+                color="white"
+            />
+        </TouchableOpacity>
+    )
+}
+
+const ReturnCancelButton = ({onPress = () => {}}) => {
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={styles.returnCancelButton}
+        >
+            <Ionicons
+                name="arrow-back-outline"
+                size={30}
+                color="white"
+            />
+        </TouchableOpacity>
+    )
+}
+
+
+const GalleryButton = ({onPress = () => {}}) => {
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={styles.galleryButton}
+        >
+            <Ionicons
+                name="images-outline"
+                size={30}
+                color="white"
+            />
+        </TouchableOpacity>
+    )
+}
+
+
+const RetakeImageButton = ({onPress = () => {}}) => {
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={styles.flipCameraButton}
+        >
+            <Ionicons
+                name="close-outline"
+                size={30}
+                color="white"
+            />
+        </TouchableOpacity>
+    )
+}
 
 
 const styles = StyleSheet.create({
