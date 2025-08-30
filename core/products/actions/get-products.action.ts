@@ -11,7 +11,6 @@ export const getProducts = async (limit = 20, offset = 0) => {
             },
         });
 
-        console.log({ data });
 
         return data.map((product) => ({
             ...product,
@@ -19,7 +18,6 @@ export const getProducts = async (limit = 20, offset = 0) => {
         }));
 
     } catch (error) {
-        console.log(error);
         return null;
     }
 }

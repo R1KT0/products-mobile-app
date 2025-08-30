@@ -37,10 +37,8 @@ const CheckAuthLayout = () => {
         )
     }
 
-    if (status === 'unauthenticated') {
-        return <Redirect href='/(products-app)/product/1' />
-        // return <Redirect href='/auth/login' />
-    }
+    if (status === 'unauthenticated') return <Redirect href='/auth/login' />
+
 
     return (
         <Stack

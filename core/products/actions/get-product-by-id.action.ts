@@ -17,14 +17,13 @@ const emptyProduct: Product = {
 
 export const getProductById = async (id: string): Promise<Product> => {
 
-    if (id === 'new' ) return emptyProduct;
+    if (id === 'new') return emptyProduct;
 
 
     try {
 
         const { data } = await productsApi.get<Product>(`/products/${id}`);
 
-        console.log({ data });
 
         return {
             ...data,

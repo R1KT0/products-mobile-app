@@ -1,6 +1,7 @@
 import { Size } from '@/core/products/interfaces/product.interface';
 import ProductImages from '@/presentation/products/components/ProductImages';
 import { useProduct } from '@/presentation/products/hooks/useProduct';
+import { useCameraStore } from '@/presentation/store/useCameraStore';
 import MenuIconButton from '@/presentation/theme/components/MenuIconButton';
 import ThemedButton from '@/presentation/theme/components/ThemedButton';
 import ThemedButtonGroup from '@/presentation/theme/components/ThemedButtonGroup';
@@ -11,53 +12,56 @@ import { useNavigation } from '@react-navigation/native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 
-const ProductScreen = ()  =>{
-    
+const ProductScreen = () => {
+    const { selectedImages, clearImages } = useCameraStore();
+
     const navigation = useNavigation();
     const { id } = useLocalSearchParams();
     const primary = useThemeColor({}, 'primary');
     const { productQuery, productMutation } = useProduct(`${id}`);
-    
-   // TODO: descomentar en casa jeje  
-    // if (productQuery.isLoading) {
-    //     return (
-    //         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    //             <ActivityIndicator size='large' color={primary} />
-    //         </View>
-    //     )
-    // }
 
-    if (!productQuery.data) {
-        console.log("Entramos aca che");
-        
-        return <Redirect href='/(products-app)/(home)' />
-    }
+    useEffect(() => {
+        return () => {
+            clearImages();
+        }
+    }, [])
 
-    const product = productQuery.data!;
-
+    // Ensure hooks are always called in the same order regardless of conditional UI returns
     useEffect(() => {
         navigation.setOptions({
-            headerRight: () => <MenuIconButton 
-               icon='camera-outline'
-               onPress={()=> router.push('/camera')} 
+            headerRight: () => <MenuIconButton
+                icon='camera-outline'
+                onPress={() => router.push('/camera')}
             />
-    })
+        })
+    }, [])
 
-
-  },[])
-  
     useEffect(() => {
-    
         if (productQuery.data) {
             navigation.setOptions({
                 title: productQuery.data.title,
             })
         }
-
-
     }, [productQuery.data])
+
+
+    if (productQuery.isLoading) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size='large' color={primary} />
+            </View>
+        )
+    }
+
+    if (!productQuery.data) {
+        return <Redirect href='/(products-app)/(home)' />
+    }
+
+    const product = productQuery.data!;
+
+
 
 
     return (
@@ -67,60 +71,60 @@ const ProductScreen = ()  =>{
             onSubmit={productMutation.mutate}
         >
             {
-                ({values, handleChange, handleSubmit, setFieldValue}) => (
+                ({ values, handleChange, handleSubmit, setFieldValue }) => (
                     <KeyboardAvoidingView
                         style={{ flex: 1 }}
                         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                         keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
-                        >
+                    >
                         <ScrollView>
                             <ThemedView>
-                                <ProductImages images={values.images} />
-                            <ThemedTextInput 
-                                placeholder="Titulo"
-                                value={ values.title }
-                                onChangeText={handleChange('title')}
-                                style={{marginVertical: 5}}
-                            />
-                            
-                            <ThemedTextInput
-                                placeholder="Slug"
-                                value={ values.slug }
-                                onChangeText={handleChange('slug')}
-                                style={{marginVertical: 5}}
-                              />
-                            
-                            <ThemedTextInput 
-                                placeholder="Descripcion"
-                                multiline
-                                numberOfLines={5}
-                                value={ values.description }
-                                onChangeText={handleChange('description')}
-                                style={{marginVertical: 5}}
+                                <ProductImages images={[...product.images, ...selectedImages]} />
+                                <ThemedTextInput
+                                    placeholder="Titulo"
+                                    value={values.title}
+                                    onChangeText={handleChange('title')}
+                                    style={{ marginVertical: 5 }}
                                 />
 
-                            <ThemedView
-                                style={{
-                                    marginHorizontal: 10,
-                                    marginVertical: 5,
-                                    flexDirection: 'row',
-                                    gap: 10, 
-                                }}
+                                <ThemedTextInput
+                                    placeholder="Slug"
+                                    value={values.slug}
+                                    onChangeText={handleChange('slug')}
+                                    style={{ marginVertical: 5 }}
+                                />
+
+                                <ThemedTextInput
+                                    placeholder="Descripcion"
+                                    multiline
+                                    numberOfLines={5}
+                                    value={values.description}
+                                    onChangeText={handleChange('description')}
+                                    style={{ marginVertical: 5 }}
+                                />
+
+                                <ThemedView
+                                    style={{
+                                        marginHorizontal: 10,
+                                        marginVertical: 5,
+                                        flexDirection: 'row',
+                                        gap: 10,
+                                    }}
                                 />
 
 
-                            <ThemedTextInput 
-                                placeholder="Precio"
-                                value={ values.price.toString() }
-                                onChangeText={handleChange('price')}
-                                style={{flex: 1}}
+                                <ThemedTextInput
+                                    placeholder="Precio"
+                                    value={values.price.toString()}
+                                    onChangeText={handleChange('price')}
+                                    style={{ flex: 1 }}
                                 />
 
-                            <ThemedTextInput 
-                                placeholder="Inventario"
-                                value={ values.stock.toString() }
-                                onChangeText={handleChange('stock')}
-                                style={{flex: 1}}
+                                <ThemedTextInput
+                                    placeholder="Inventario"
+                                    value={values.stock.toString()}
+                                    onChangeText={handleChange('stock')}
+                                    style={{ flex: 1 }}
                                 />
 
 
@@ -128,38 +132,38 @@ const ProductScreen = ()  =>{
 
 
 
-                            <ThemedView style={{ marginHorizontal: 10}}>
+                            <ThemedView style={{ marginHorizontal: 10 }}>
 
-                            <ThemedButtonGroup
+                                <ThemedButtonGroup
                                     options={['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']}
                                     selectedOption={values.sizes}
-                                    onSelect={ (selectedSize) => {
-                                        const newSizesValue = values.sizes.includes(selectedSize as Size) 
-                                        ? values.sizes.filter(s => s !== selectedSize)
-                                        : [...values.sizes, selectedSize]
+                                    onSelect={(selectedSize) => {
+                                        const newSizesValue = values.sizes.includes(selectedSize as Size)
+                                            ? values.sizes.filter(s => s !== selectedSize)
+                                            : [...values.sizes, selectedSize]
                                         // : values.sizes.push(selectedSize as Size)
 
                                         setFieldValue('sizes', newSizesValue)
                                     }}
                                 />
 
-                                                        
-                            <ThemedButtonGroup
+
+                                <ThemedButtonGroup
                                     options={['kid', 'men', 'women', 'unisex']}
                                     selectedOption={[values.gender]}
-                                    onSelect={ (selectedOption) => setFieldValue('gender', selectedOption)}
-                                    />
+                                    onSelect={(selectedOption) => setFieldValue('gender', selectedOption)}
+                                />
 
                             </ThemedView>
 
                             {/* Submit Button */}
-                            <View style={{marginVertical: 10, marginHorizontal: 10}}>
+                            <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
                                 <ThemedButton
-                                icon='save-outline'
-                                onPress={() => handleSubmit()}
+                                    icon='save-outline'
+                                    onPress={() => handleSubmit()}
                                 >
 
-                                Guardar   
+                                    Guardar
                                 </ThemedButton>
                             </View>
 
@@ -167,8 +171,8 @@ const ProductScreen = ()  =>{
                     </KeyboardAvoidingView >
                 )
             }
-    </Formik>
-  )
+        </Formik>
+    )
 }
 
 export default ProductScreen;

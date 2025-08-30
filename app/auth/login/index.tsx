@@ -58,7 +58,6 @@ const LoginScreen = () => {
             return;
         }
 
-        console.log("Perro kleguje jajajjsa");
         router.push('/(products-app)/(home)');
 
     }

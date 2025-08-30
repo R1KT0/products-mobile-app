@@ -36,7 +36,6 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             await get().logout();
             return false;
         }
-        console.log("Aca no llega nuncaaaaaaaaa***************");
 
         set({
             status: 'authenticated',
@@ -65,7 +64,6 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         // if (get().user) return; //! Solo para testing, no se debe usar en producción!!!
 
         const resp = await authCheckStatus();
-        console.log({ resp });
         await get().changeStatus(resp?.token, resp?.user);
     },
 
